@@ -31,5 +31,6 @@ resource "azurerm_log_analytics_workspace" "log_space_1" {
     name = var.log_space_name
     location = data.azurerm_resource_group.rg2.location
     resource_group_name = data.azurerm_resource_group.rg2.name
-    sku = "Free"
+    sku = "PerGB2018"
+    retention_in_days = 30
 }

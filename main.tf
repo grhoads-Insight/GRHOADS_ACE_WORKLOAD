@@ -1,11 +1,9 @@
-resource "azurerm_app_service_plan" "app_plan1" {
+resource "azurerm_service_plan" "app_plan1" {
     name = "app-service-plan-main"
     location = data.azurerm_resource_group.rg2.location
     resource_group_name = data.azurerm_resource_group.rg2.location
-    sku {
-        tier = "Standard"
-        size = "S1"
-    }
+    os_type = "Linux"
+    sku_name = "S1"
 }
 
 resource "azurerm_linux_web_app" "web_app1" {
@@ -14,7 +12,7 @@ resource "azurerm_linux_web_app" "web_app1" {
     location = data.azurerm_resource_group.rg2.location
     service_plan_id = azurerm_app_service_plan.app_plan1.id
 
-    config{}
+    site_config {}
 }
 
 resource "azurerm_linux_function_app" "function_app1" {

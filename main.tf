@@ -1,7 +1,7 @@
 resource "azurerm_service_plan" "app_plan1" {
     name = "app-service-plan-main"
     location = data.azurerm_resource_group.rg2.location
-    resource_group_name = data.azurerm_resource_group.rg2.location
+    resource_group_name = data.azurerm_resource_group.rg2.name
     os_type = "Linux"
     sku_name = "S1"
 }

@@ -2,7 +2,6 @@ resource "azurerm_app_service_plan" "app_plan1" {
     name = "app-service-plan-main"
     location = data.azurerm_resource_group.rg2.location
     resource_group_name = data.azurerm_resource_group.rg2.location
-    os_type = "Linux"
     sku {
         tier = "Standard"
         size = "S1"

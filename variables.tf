@@ -12,3 +12,8 @@ variable "function_app_name" {
     description = "name for function app"
     default = "function-app-main"
 }
+
+variable "log_space_name" {
+    description = "name for log analytics workspace"
+    default = "log-space-main"
+}

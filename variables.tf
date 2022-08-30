@@ -1,3 +1,7 @@
+variable "env" {
+    description = "environment declaration"
+    #add a default? maybe change for each branch?
+}
 variable "app_service_plan_name" {
     description = "name for app service plan for workload"
     default = "app-service-plan-main"
@@ -16,4 +20,14 @@ variable "function_app_name" {
 variable "log_space_name" {
     description = "name for log analytics workspace"
     default = "log-space-main"
+}
+
+variable "cosmosDB-name" {
+    description = "name for cosmosDB account"
+    default = "workload-cosmosdb"
+}
+
+variable "sql_database_name" {
+    description = "name for sql database"
+    default = "workload-sqldatabase"
 }

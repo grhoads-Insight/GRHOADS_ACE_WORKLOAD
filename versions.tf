@@ -4,7 +4,7 @@ terraform {
     organization = "insight"
 
     workspaces {
-      name = "grhoads-ace-landingzone"
+      name = "grhoads-ace-workload"
     }
   }
   required_providers {
@@ -22,4 +22,12 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = true
     }
   }
+}
+
+provider "null" {
+
+}
+
+provider "archive" {
+
 }

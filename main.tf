@@ -15,6 +15,11 @@ resource "azurerm_linux_web_app" "web_app1" {
     site_config {}
 }
 
+resource "azurerm_app_service_virtual_network_swift_connection" "swift_appservice" {
+    app_service_id = azurerm_linux_web_app.web_app1.id
+    subnet_id = data.azurerm_subnet.web-subnet.id
+}
+
 resource "azurerm_linux_function_app" "function_app1" {
     name = var.function_app_name
     resource_group_name = data.azurerm_resource_group.rg2.name
@@ -25,6 +30,11 @@ resource "azurerm_linux_function_app" "function_app1" {
     service_plan_id = azurerm_service_plan.app_plan1.id
 
     site_config {}
+}
+
+resource "azurerm_app_service_virtual_network_swift_connection" "swift_function" {
+    app_service_id = azurerm_linux_function_app.function_app1.id
+    subnet_id = data.azurerm_subnet.app-subnet.id
 }
 
 resource "azurerm_log_analytics_workspace" "log_space_1" {

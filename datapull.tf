@@ -15,19 +15,19 @@ data "azurerm_virtual_network" "vnet1" {
     resource_group_name = data.azurerm_resource_group.rg1.name
 }
 
-data "azurerm_subnet" "subnet1" {
+data "azurerm_subnet" "app-subnet" {
     name = "app-subnet"
     resource_group_name = data.azurerm_resource_group.rg1.name
     virtual_network_name = data.azurerm_virtual_network.vnet1.name
 }
 
-data "azurerm_subnet" "subnet2" {
+data "azurerm_subnet" "data-subnet" {
     name = "data-subnet"
     resource_group_name = data.azurerm_resource_group.rg1.name
     virtual_network_name = data.azurerm_virtual_network.vnet1.name
 }
 
-data "azurerm_subnet" "subnet3" {
+data "azurerm_subnet" "web-subnet" {
     name = "web-subnet"
     resource_group_name = data.azurerm_resource_group.rg1.name
     virtual_network_name = data.azurerm_virtual_network.vnet1.name

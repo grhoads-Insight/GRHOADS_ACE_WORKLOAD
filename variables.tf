@@ -10,7 +10,7 @@ variable "app_service_plan_name" {
 
 variable "web_app_name" {
     description = "name for main web app"
-    default = "web-app-${var.env}"
+    default = "web-app-"
 }
 
 variable "function_app_name" {

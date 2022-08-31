@@ -23,7 +23,7 @@ resource "azurerm_linux_web_app" "web_app1" {
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "swift_appservice" {
-  app_service_id = azurerm_service_plan.webapp_serviceplan.id
+  app_service_id = azurerm_linux_web_app.web_app1.id
   subnet_id      = data.azurerm_subnet.web-subnet.id
 }
 
@@ -48,7 +48,7 @@ resource "azurerm_function_app" "azure_functionapp1" {
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "swift_function" {
-  app_service_id = azurerm_service_plan.functionapp_serviceplan.id
+  app_service_id = azurerm_function_app.azure_functionapp1.id
   subnet_id      = data.azurerm_subnet.app-subnet.id
 }
 

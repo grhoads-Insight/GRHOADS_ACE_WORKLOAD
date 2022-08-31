@@ -52,7 +52,20 @@ resource "azurerm_cosmosdb_account" "cosmosdb_1" {
   offer_type          = "Standard"
   kind                = "MongoDB"
 
-  #add geo-location for redundancy
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  geo_location {
+    location          = data.azurerm_resource_group.rg2.location
+    failover_priority = 1
+  }
+
+  geo_location {
+    location          = "centrulus"
+    failover_priority = 0
+  }
 }
 
 resource "azurerm_cosmosdb_sql_database" "sql_database1" {

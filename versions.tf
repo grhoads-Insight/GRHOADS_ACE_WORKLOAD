@@ -1,4 +1,12 @@
 terraform {
+
+  cloud {
+    organization = "insight"
+
+    workspaces {
+      name = "grhoads-ace-landingzone"
+    }
+  }
   required_providers {
     azurerm = {
         source = "hashicorp/azurerm"

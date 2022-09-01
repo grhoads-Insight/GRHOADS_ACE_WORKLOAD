@@ -1,37 +1,57 @@
 resource "azurerm_service_plan" "webapp_serviceplan" {
-  name                = var.webapp_service_plan_name
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
-  location            = data.azurerm_resource_group.workload_rg.location
+  for_each            = var.env
+  name                = "${var.webapp_service_plan_name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
   os_type             = "Linux"
   sku_name            = "P1v2"
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_service_plan" "functionapp_serviceplan" {
-  name                = var.functionapp_service_plan_name
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
-  location            = data.azurerm_resource_group.workload_rg.location
+  for_each            = var.env
+  name                = "${var.functionapp_service_plan_name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
   os_type             = "Linux"
   sku_name            = "P1v2"
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 resource "azurerm_linux_web_app" "web_app1" {
-  name                = var.web_app_name
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
-  location            = data.azurerm_resource_group.workload_rg.location
-  service_plan_id     = azurerm_service_plan.webapp_serviceplan.id
+  for_each            = var.env
+  name                = "${var.web_app_name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
+  service_plan_id     = azurerm_service_plan.webapp_serviceplan["${each.value}"].id
 
   site_config {}
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "swift_appservice" {
-  app_service_id = azurerm_linux_web_app.web_app1.id
-  subnet_id      = data.azurerm_subnet.web-subnet.id
+  for_each       = var.env
+  app_service_id = azurerm_linux_web_app.web_app1["${each.value}"].id
+  subnet_id      = data.azurerm_subnet.web-subnet["${each.value}"].id
 }
 
 resource "azurerm_function_app" "azure_functionapp1" {
-  name                = var.function_app_name
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
-  location            = data.azurerm_resource_group.workload_rg.location
-  app_service_plan_id = azurerm_service_plan.functionapp_serviceplan.id
+  for_each            = var.env
+  name                = "${var.function_app_name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
+  app_service_plan_id = azurerm_service_plan.functionapp_serviceplan["${each.value}"].id
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE"    = "1",
     "FUNCTIONS_WORKER_RUNTIME"    = "node",
@@ -42,14 +62,20 @@ resource "azurerm_function_app" "azure_functionapp1" {
     linux_fx_version          = "node|14"
     use_32_bit_worker_process = false
   }
-  storage_account_name       = data.azurerm_storage_account.storage_account1.name
-  storage_account_access_key = data.azurerm_storage_account.storage_account1.primary_access_key
+  storage_account_name       = data.azurerm_storage_account.storage_account1["${each.value}"].name
+  storage_account_access_key = data.azurerm_storage_account.storage_account1["${each.value}"].primary_access_key
   version                    = "~3"
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "swift_function" {
-  app_service_id = azurerm_function_app.azure_functionapp1.id
-  subnet_id      = data.azurerm_subnet.app-subnet.id
+  for_each       = var.env
+  app_service_id = azurerm_function_app.azure_functionapp1["${each.value}"].id
+  subnet_id      = data.azurerm_subnet.app-subnet["${each.value}"].id
 }
 
 data "archive_file" "hello_world" {
@@ -72,17 +98,24 @@ data "archive_file" "hello_world" {
 #   value = azurerm_function_app.azure_functionapp1.default_hostname
 # }
 resource "azurerm_log_analytics_workspace" "log_space1" {
-  name                = var.log_space_name
-  location            = data.azurerm_resource_group.workload_rg.location
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
+  for_each            = var.env
+  name                = "${var.log_space_name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
   sku                 = "PerGB2018"
   retention_in_days   = 30
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_cosmosdb_account" "cosmosdb1" {
-  name                = var.cosmosdb-name
-  location            = data.azurerm_resource_group.workload_rg.location
-  resource_group_name = data.azurerm_resource_group.workload_rg.name
+  for_each            = var.env
+  name                = "${var.cosmosdb-name}-${each.value}"
+  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
   offer_type          = "Standard"
   kind                = "MongoDB"
 
@@ -92,7 +125,7 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
     max_staleness_prefix    = 100000
   }
   geo_location {
-    location          = data.azurerm_resource_group.workload_rg.location
+    location          = data.azurerm_resource_group.environment_rg["${each.value}"].location
     failover_priority = 1
   }
 
@@ -100,36 +133,55 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
     location          = "centralus"
     failover_priority = 0
   }
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_key_vault_secret" "keyvault_user_secret" {
-  name = "admin login for mssql server"
-  value = "4dm1n157r470r"
-  key_vault_id = data.azurerm_key_vault.keyvault1.id
+  for_each     = var.env
+  name         = "username-${each.value}"
+  value        = "4dm1n157r470r"
+  key_vault_id = data.azurerm_key_vault.keyvault1["${each.value}"].id
 }
 
 resource "azurerm_key_vault_secret" "keyvault_pass_secret" {
-  name = "admin login for mssql server"
-  value = "4-v3ry-53cr37-p455w0rd"
-  key_vault_id = data.azurerm_key_vault.keyvault1.id
+  for_each     = var.env
+  name         = "password-${each.value}"
+  value        = "4-v3ry-53cr37-p455w0rd"
+  key_vault_id = data.azurerm_key_vault.keyvault1["${each.value}"].id
 }
 
 resource "azurerm_mssql_server" "mssql_server1" {
-  name                         = var.sql_server_name
-  resource_group_name          = data.azurerm_resource_group.workload_rg.name
-  location                     = data.azurerm_resource_group.workload_rg.location
+  for_each                     = var.env
+  name                         = "${var.sql_server_name}-${each.value}"
+  resource_group_name          = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location                     = data.azurerm_resource_group.environment_rg["${each.value}"].location
   version                      = "12.0"
-  administrator_login          = azurerm_key_vault_secret.keyvault_user_secret.value
-  administrator_login_password = azurerm_key_vault_secret.keyvault_pass_secret.value
+  administrator_login          = azurerm_key_vault_secret.keyvault_user_secret["${each.value}"].value
+  administrator_login_password = azurerm_key_vault_secret.keyvault_pass_secret["${each.value}"].value
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }
 
 resource "azurerm_mssql_database" "mssql_database1" {
-  name         = var.sql_database_name
-  server_id    = azurerm_mssql_server.mssql_server1.id
+  for_each     = var.env
+  name         = "${var.sql_database_name}-${each.value}"
+  server_id    = azurerm_mssql_server.mssql_server1["${each.value}"].id
   collation    = "SQL_Latin1_General_CP1_CI_AS"
   license_type = "LicenseIncluded"
   max_size_gb  = 2
   #read_scale     = true
   sku_name = "S0"
   #zone_redundant = true
+
+  tags = {
+    "Environment"   = "${each.value}"
+    "Resource Type" = "Workload"
+  }
 }

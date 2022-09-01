@@ -1,16 +1,21 @@
 variable "env" {
   description = "environment declaration"
-  default     = "dev"
+  type        = map(string)
+  default = {
+    "dev"  = "dev"
+    "test" = "test"
+    "prod" = "prod"
+  }
   #add a default? maybe change for each branch?
 }
 variable "webapp_service_plan_name" {
   description = "name for app service plan for workload"
-  default     = "webapp-service-plan"
+  default     = "webapp-plan"
 }
 
 variable "functionapp_service_plan_name" {
   description = "name for app service plan for workload"
-  default     = "functionapp-service-plan"
+  default     = "functionapp-plan"
 }
 
 variable "web_app_name" {

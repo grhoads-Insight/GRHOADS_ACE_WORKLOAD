@@ -102,6 +102,18 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
   }
 }
 
+resource "azurerm_key_vault_secret" "keyvault_user_secret" {
+  name = "admin login for mssql server"
+  value = "4dm1n157r470r"
+  key_vault_id = data.azurerm_key_vault.keyvault1.id
+}
+
+resource "azurerm_key_vault_secret" "keyvault_pass_secret" {
+  name = "admin login for mssql server"
+  value = "4-v3ry-53cr37-p455w0rd"
+  key_vault_id = data.azurerm_key_vault.keyvault1.id
+}
+
 resource "azurerm_mssql_server" "mssql_server1" {
   name                         = var.sql_server_name
   resource_group_name          = data.azurerm_resource_group.workload_rg.name

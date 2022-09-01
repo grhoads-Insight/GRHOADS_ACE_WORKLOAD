@@ -11,7 +11,7 @@ data "azurerm_key_vault" "keyvault1" {
 
 data "azurerm_virtual_network" "vnet1" {
   for_each            = var.env
-  name                = "grhoads-network-${each.value}"
+  name                = "grhoads-vnet-${each.value}"
   resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
 }
 

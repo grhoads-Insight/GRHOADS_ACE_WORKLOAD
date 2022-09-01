@@ -134,10 +134,10 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
     failover_priority = 0
   }
 
-virtual_network_rule {
-  id = data.azurerm_subnet.data-subnet["${each.value}"].subnet_id
-  ignore_missing_vnet_service_endpoint = true
-}
+  virtual_network_rule {
+    id                                   = data.azurerm_subnet.data-subnet["${each.value}"].subnet_id
+    ignore_missing_vnet_service_endpoint = true
+  }
   tags = {
     "Environment"   = "${each.value}"
     "Resource Type" = "Workload"

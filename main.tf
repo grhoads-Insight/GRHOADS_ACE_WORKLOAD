@@ -118,6 +118,7 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
   location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
   offer_type          = "Standard"
   kind                = "MongoDB"
+  is_virtual_network_filter_enabled = true
 
   consistency_policy {
     consistency_level       = "BoundedStaleness"
@@ -135,7 +136,7 @@ resource "azurerm_cosmosdb_account" "cosmosdb1" {
   }
 
   virtual_network_rule {
-    id                                   = data.azurerm_subnet.data-subnet["${each.value}"].subnet_id
+    id                                   = data.azurerm_subnet.data-subnet["${each.value}"].id
     ignore_missing_vnet_service_endpoint = true
   }
   tags = {

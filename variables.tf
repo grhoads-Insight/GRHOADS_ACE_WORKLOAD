@@ -15,12 +15,12 @@ variable "functionapp_service_plan_name" {
 
 variable "web_app_name" {
   description = "name for main web app"
-  default     = "web-app"
+  default     = "grhoads-web-app"
 }
 
 variable "function_app_name" {
   description = "name for function app"
-  default     = "function-app"
+  default     = "grhoads-function-app"
 }
 
 variable "log_space_name" {
@@ -36,4 +36,9 @@ variable "cosmosdb-name" {
 variable "sql_database_name" {
   description = "name for sql database"
   default     = "workload-sqldatabase"
+}
+
+variable "sql_server_name" {
+  description = "name for sql database"
+  default     = "workload-sqlserver"
 }

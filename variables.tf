@@ -35,15 +35,15 @@ variable "log_space_name" {
 
 variable "cosmosdb-name" {
   description = "name for cosmosDB account"
-  default     = "workload-cosmosdb"
+  default     = "grhoads-cosmosdb"
 }
 
 variable "sql_database_name" {
   description = "name for sql database"
-  default     = "workload-sqldatabase"
+  default     = "grhoads-sqldatabase"
 }
 
 variable "sql_server_name" {
   description = "name for sql database"
-  default     = "workload-sqlserver"
+  default     = "grhoads-sqlserver"
 }

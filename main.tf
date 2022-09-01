@@ -119,8 +119,8 @@ resource "azurerm_mssql_server" "mssql_server1" {
   resource_group_name          = data.azurerm_resource_group.workload_rg.name
   location                     = data.azurerm_resource_group.workload_rg.location
   version                      = "12.0"
-  administrator_login          = "4dm1n157r470r"
-  administrator_login_password = "4-v3ry-53cr37-p455w0rd"
+  administrator_login          = azurerm_key_vault_secret.keyvault_user_secret.value
+  administrator_login_password = azurerm_key_vault_secret.keyvault_pass_secret.value
 }
 
 resource "azurerm_mssql_database" "mssql_database1" {

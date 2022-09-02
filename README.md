@@ -1,6 +1,8 @@
 # GRHOADS_ACE_WORKLOAD
 Repository for ACE capstone workload deployment
 
+![azure-diagram](images/Azure-Diagram-grhoads.png)
+
 ## Requirements
 
 | Name | Version |

@@ -84,6 +84,9 @@ data "archive_file" "hello_world" {
   output_path = "${path.module}/hello_world.zip"
 }
 
+#code used to publish data to function app
+#only works when running terraform locally
+
 # locals {
 #   publish_code_command = "az webapp deployment source config-zip --resource-group ${data.azurerm_resource_group.workload_rg.name} --name ${azurerm_function_app.azure_functionapp1.name} --src ${data.archive_file.hello_world.output_path}"
 # }

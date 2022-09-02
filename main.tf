@@ -112,12 +112,12 @@ resource "azurerm_log_analytics_workspace" "log_space1" {
 }
 
 resource "azurerm_cosmosdb_account" "cosmosdb1" {
-  for_each            = var.env
-  name                = "${var.cosmosdb-name}-${each.value}"
-  resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
-  location            = data.azurerm_resource_group.environment_rg["${each.value}"].location
-  offer_type          = "Standard"
-  kind                = "MongoDB"
+  for_each                          = var.env
+  name                              = "${var.cosmosdb-name}-${each.value}"
+  resource_group_name               = data.azurerm_resource_group.environment_rg["${each.value}"].name
+  location                          = data.azurerm_resource_group.environment_rg["${each.value}"].location
+  offer_type                        = "Standard"
+  kind                              = "MongoDB"
   is_virtual_network_filter_enabled = true
 
   consistency_policy {
@@ -181,8 +181,9 @@ resource "azurerm_mssql_database" "mssql_database1" {
   collation    = "SQL_Latin1_General_CP1_CI_AS"
   license_type = "LicenseIncluded"
   max_size_gb  = 2
+  sku_name     = "S0"
+  #would be enabled for prod / premium database
   #read_scale     = true
-  sku_name = "S0"
   #zone_redundant = true
 
   tags = {

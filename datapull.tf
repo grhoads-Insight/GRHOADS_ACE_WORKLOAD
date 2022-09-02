@@ -41,16 +41,3 @@ data "azurerm_storage_account" "storage_account1" {
   name                = "grhoadslzstorage${each.value}"
   resource_group_name = data.azurerm_resource_group.environment_rg["${each.value}"].name
 }
-
-# data "azurerm_storage_container" "storage_container1" {
-#   for_each = var.env  
-#   name                 = "grhoadslzcontainer-${var.env}"
-#   storage_account_name = data.azurerm_storage_account.storage_account1["${each.value}"].name
-# }
-
-# data "azurerm_storage_blob" "storage_blob1" {
-#   for_each = var.env
-#   name                   = "grhoadslzblob-${var.env}"
-#   storage_account_name   = data.azurerm_storage_account.storage_account1["${each.value}"].name
-#   storage_container_name = data.azurerm_storage_container.storage_container1["${each.value}"].name
-# }
